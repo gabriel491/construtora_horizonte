@@ -20,11 +20,13 @@ const InstagramIcon = ({ size = 24 }) => (
 );
 
 const globalStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
   
   :root {
-    --color-bg: #09090b;
+    --color-bg: #111111;
     --color-text: #fafafa;
+    --color-text-muted: #A8A8A8;
+    --color-accent: #84907a;
   }
   
   body {
@@ -43,7 +45,7 @@ const globalStyles = `
   .main-wrapper {
     position: relative;
     z-index: 10;
-    background-color: #09090b;
+    background-color: #111111;
     margin-bottom: 100vh;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
   }
@@ -62,7 +64,7 @@ const globalStyles = `
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #09090b;
+    background: #111111;
   }
   ::-webkit-scrollbar-thumb {
     background: #3f3f46;
@@ -134,10 +136,11 @@ const globalStyles = `
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
   }
 
+  /* border-radius: 0 — linguagem arquitetural, cantos limpos */
   .marquee-item {
     flex-shrink: 0;
     margin-right: 1.25rem;
-    border-radius: 12px;
+    border-radius: 0;
     overflow: hidden;
     position: relative;
     cursor: zoom-in;
@@ -176,6 +179,113 @@ const globalStyles = `
 
   .marquee-item:hover .marquee-item-overlay {
     opacity: 1;
+  }
+
+  /* ── WhatsApp FAB ── */
+  @keyframes fab-pulse {
+    0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,0.3), 0 0 0 0 rgba(37,211,102,0.35); }
+    55%       { box-shadow: 0 4px 24px rgba(37,211,102,0.3), 0 0 0 12px rgba(37,211,102,0); }
+  }
+
+  .whatsapp-fab {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 70;
+    width: 56px;
+    height: 56px;
+    background: #25D366;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    animation: fab-pulse 3s ease-in-out infinite;
+    transition: transform 0.25s ease, background 0.25s ease;
+    text-decoration: none;
+  }
+
+  .whatsapp-fab:hover {
+    transform: scale(1.1);
+    background: #1ebe5d;
+    animation-play-state: paused;
+  }
+
+  /* ── Secondary CTA Button — cantos retos, linguagem arquitetural ── */
+  .secondary-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 600;
+    padding: 12px 20px;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .secondary-cta-btn:hover {
+    background: #fff;
+    color: #111111;
+    border-color: #fff;
+  }
+
+  .secondary-cta-btn .arrow-icon {
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .secondary-cta-btn:hover .arrow-icon {
+    transform: translateX(5px);
+  }
+
+  /* ── Nav CTA Button — alto contraste ── */
+  .nav-cta-btn {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    background: #fff;
+    color: #111111;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .nav-cta-btn:hover {
+    background: #e0e0e0;
+  }
+
+  /* ── Form Inputs — anti-zoom iOS (font-size >= 16px) ── */
+  .form-input-field {
+    font-size: 16px;
+    background: transparent;
+    width: 100%;
+    outline: none;
+    color: #fff;
+    border: none;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .form-input-field::placeholder {
+    color: #4a4a4a;
+  }
+
+  .form-input-field:focus {
+    color: #fff;
+  }
+
+  .form-input-field:focus::placeholder {
+    color: #333;
   }
 `;
 
@@ -532,7 +642,7 @@ export default function App() {
   return (
     <div
       ref={containerRef}
-      className="relative bg-[#09090b] w-full min-h-screen"
+      className="relative bg-[#111111] w-full min-h-screen"
     >
       <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
 
@@ -571,7 +681,7 @@ export default function App() {
             <div className="text-2xl font-serif text-white tracking-wider font-bold">
               HORIZONTE.
             </div>
-            <div className="hidden md:flex items-center gap-10 text-sm font-medium text-zinc-300">
+            <div className="hidden md:flex items-center gap-10 text-sm font-medium text-zinc-400">
               <a href="#" className="hover:text-white transition-colors">
                 Empreendimentos
               </a>
@@ -585,9 +695,15 @@ export default function App() {
                 Contato
               </a>
             </div>
-            <div className="hidden md:block">
-              <button className="text-xs font-medium uppercase tracking-wider text-white border-b border-[#84907a] pb-1 hover:text-[#84907a] transition-colors">
+            <div className="hidden md:flex items-center gap-5">
+              <a
+                href="tel:+551140028922"
+                className="text-xs font-medium text-zinc-500 hover:text-white transition-colors tracking-wider"
+              >
                 Agendar Visita
+              </a>
+              <button className="nav-cta-btn">
+                Falar com um Corretor
               </button>
             </div>
             <button className="md:hidden text-white">
@@ -605,7 +721,13 @@ export default function App() {
                 backgroundImage: `url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')`,
               }}
             ></div>
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-[#09090b]"></div>
+            {/* Vignette sutil — preserva a textura e iluminação real da foto */}
+            <div className="absolute inset-0" style={{
+              background: 'linear-gradient(to top, rgba(17,17,17,0.98) 0%, rgba(17,17,17,0.45) 30%, rgba(0,0,0,0) 60%)'
+            }} />
+            <div className="absolute inset-0" style={{
+              background: 'radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.38) 100%)'
+            }} />
           </div>
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto flex flex-col items-center mt-20">
             <span className="gsap-fade-up uppercase tracking-[0.3em] text-xs font-semibold text-[#84907a] mb-6 block">
@@ -614,11 +736,12 @@ export default function App() {
             <h1 className="gsap-fade-up font-serif text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight">
               A Arte de <br className="hidden md:block" /> Viver Bem.
             </h1>
-            <p className="gsap-fade-up text-zinc-300 text-lg md:text-xl max-w-2xl font-light mb-10">
+            <p className="gsap-fade-up text-[#B0B0B0] text-lg md:text-xl max-w-2xl font-light mb-10">
               Arquitetura contemporânea e sofisticação atemporal para você
               construir o seu legado.
             </p>
-            <button className="gsap-fade-up group flex items-center gap-4 bg-white text-zinc-950 px-8 py-4 rounded-full font-medium hover:bg-zinc-200 transition-colors">
+            {/* border-radius: 0 — segue a linguagem das linhas retas da arquitetura */}
+            <button className="gsap-fade-up group flex items-center gap-4 bg-white text-zinc-950 px-8 py-4 font-semibold tracking-wide text-sm hover:bg-zinc-100 transition-colors">
               Conhecer Empreendimentos
               <ArrowRight
                 size={18}
@@ -632,7 +755,7 @@ export default function App() {
         <section
           ref={horizSlider2Ref}
           data-section="1"
-          className="relative bg-[#09090b] overflow-hidden"
+          className="relative bg-[#111111] overflow-hidden"
           style={{ height: '100vh' }}
         >
           {/* Top Header Bar */}
@@ -658,7 +781,7 @@ export default function App() {
               >
                 {/* Card — imagem full com overlay de texto */}
                 <div
-                  className="horiz-slide-card relative w-full h-full rounded-2xl overflow-hidden"
+                  className="horiz-slide-card relative w-full h-full overflow-hidden"
                   style={{ maxHeight: '75vh' }}
                 >
                   <img
@@ -716,16 +839,14 @@ export default function App() {
                 Obras primas selecionadas para os clientes mais exigentes, com
                 vistas deslumbrantes e design inigualável.
               </p>
-              <span className="block mt-6 text-xs uppercase tracking-wider text-[#84907a]">
-                ( Arraste para os lados )
-              </span>
+
             </div>
 
             <div ref={slider2Ref} className="flex overflow-x-auto snap-x snap-mandatory gap-8 pb-8 no-scrollbar w-full pl-4 md:pl-0">
               {imoveis.map((imovel) => (
                 <div
                   key={imovel.id}
-                  className="gsap-fade-up flex flex-col group cursor-pointer flex-none w-[85vw] md:w-[60vw] lg:w-[45vw] snap-center md:snap-start"
+                  className="gsap-fade-up flex flex-col group cursor-pointer flex-none w-[82vw] md:w-[58vw] lg:w-[43vw] snap-center md:snap-start"
                 >
                   <div className="relative overflow-hidden h-[350px] md:h-[500px] mb-6">
                     <img
@@ -748,8 +869,9 @@ export default function App() {
                       <p className="text-[#84907a] mb-2 font-medium">
                         {imovel.price}
                       </p>
-                      <button className="text-xs uppercase tracking-wider font-semibold border-b border-zinc-600 pb-1 hover:border-white text-white transition-colors">
+                      <button className="secondary-cta-btn">
                         Conhecer Imóvel
+                        <ArrowRight size={12} className="arrow-icon" />
                       </button>
                     </div>
                   </div>
@@ -759,7 +881,7 @@ export default function App() {
           </div>
         </section>
 
-        <section data-section="3" className="py-24 md:py-32 bg-[#09090b] relative z-10 overflow-hidden">
+        <section data-section="3" className="py-24 md:py-32 bg-[#111111] relative z-10 overflow-hidden">
           <div className="container mx-auto px-6">
             <div className="mb-16 gsap-fade-up">
               <h2 className="font-serif text-4xl md:text-5xl mb-4 text-white">
@@ -859,7 +981,7 @@ export default function App() {
         <section
           ref={horizSliderRef}
           data-section="4"
-          className="relative bg-[#09090b] overflow-hidden border-t border-zinc-900"
+          className="relative bg-[#111111] overflow-hidden border-t border-zinc-900"
           style={{ height: '100vh' }}
         >
           {/* ── Top Header Bar ── */}
@@ -885,7 +1007,7 @@ export default function App() {
               >
                 {/* Card */}
                 <div
-                  className="horiz-slide-card w-full h-full rounded-2xl overflow-hidden flex flex-col md:flex-row"
+                  className="horiz-slide-card w-full h-full overflow-hidden flex flex-col md:flex-row"
                   style={{ maxWidth: '1400px' }}
                 >
                   {/* Image Side */}
@@ -928,12 +1050,9 @@ export default function App() {
                       {emp.description}
                     </p>
 
-                    <button className="group flex items-center gap-4 text-[9px] uppercase tracking-[0.22em] font-semibold border-b border-zinc-700 pb-2 hover:border-[#84907a] text-white transition-all duration-300 w-fit">
+                    <button className="secondary-cta-btn">
                       Explorar Projeto
-                      <ArrowRight
-                        size={13}
-                        className="text-[#84907a] group-hover:translate-x-2 transition-transform duration-300"
-                      />
+                      <ArrowRight size={12} className="arrow-icon" />
                     </button>
                   </div>
                 </div>
@@ -955,7 +1074,7 @@ export default function App() {
           </div>
         </section>
 
-        <section data-section="5" className="py-24 md:py-32 px-6 bg-[#09090b] relative z-10">
+        <section data-section="5" className="py-24 md:py-32 px-6 bg-[#111111] relative z-10">
           <div className="container mx-auto max-w-4xl">
             <div className="text-center mb-16 gsap-fade-up">
               <span className="uppercase tracking-[0.2em] text-xs font-semibold text-[#84907a] mb-4 block">
@@ -982,7 +1101,7 @@ export default function App() {
                   <input
                     type="text"
                     placeholder="Como deseja ser chamado?"
-                    className="bg-transparent w-full outline-none text-white placeholder:text-zinc-700"
+                    className="form-input-field"
                   />
                 </div>
                 <div className="flex flex-col border-b border-zinc-700 pb-2 focus-within:border-[#84907a] transition-colors">
@@ -992,7 +1111,7 @@ export default function App() {
                   <input
                     type="tel"
                     placeholder="(00) 00000-0000"
-                    className="bg-transparent w-full outline-none text-white placeholder:text-zinc-700"
+                    className="form-input-field"
                   />
                 </div>
               </div>
@@ -1023,15 +1142,16 @@ export default function App() {
                 <label className="text-xs uppercase tracking-wider text-zinc-500 mb-2">
                   Metragem Estimada
                 </label>
-                <input
-                  type="text"
-                  placeholder="Ex: 500m²"
-                  className="bg-transparent w-full outline-none text-white placeholder:text-zinc-700"
-                />
+                  <input
+                    type="text"
+                    placeholder="Ex: 500m²"
+                    className="form-input-field"
+                  />
               </div>
 
-              <div className="mt-6 text-center md:text-right">
-                <button className="group flex items-center justify-center md:justify-end w-full md:w-auto gap-4 bg-white text-zinc-950 px-8 py-4 rounded-full font-medium hover:bg-zinc-200 transition-colors ml-auto">
+              <div className="mt-8">
+                {/* Botão full-width — fricção zero, contraste máximo */}
+                <button className="group flex items-center justify-center w-full gap-4 bg-white text-zinc-950 px-8 py-5 font-semibold tracking-wide text-sm hover:bg-zinc-100 transition-colors">
                   Enviar Solicitação
                   <ArrowRight
                     size={18}
@@ -1044,7 +1164,7 @@ export default function App() {
         </section>
       </div>
 
-      {/* Footer Reveal (mantido como estava) */}
+      {/* Footer Reveal — credibilidade institucional */}
       <footer className="footer-reveal flex flex-col">
         <div className="absolute inset-0 z-0">
           <img
@@ -1052,26 +1172,98 @@ export default function App() {
             alt="Footer Background"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/75"></div>
+          <div className="absolute inset-0 bg-black/82"></div>
         </div>
+
+        {/* CTA principal */}
         <div className="relative z-10 flex-1 flex items-center justify-center px-4">
-          <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl text-white text-center leading-tight max-w-5xl">
-            Vem realizar o seu
-            <br className="hidden md:block" /> sonho com a gente.
-          </h2>
-        </div>
-        <div className="relative z-10 py-8 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center text-sm text-zinc-400 border-t border-white/10">
-          <p>© 2026 Construtora Horizonte. Todos os direitos reservados.</p>
-          <div className="flex items-center gap-6 mt-4 md:mt-0">
+          <div className="text-center">
+            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#84907a] mb-6 block">
+              Construindo Legados Desde 2003
+            </span>
+            <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl text-white text-center leading-tight max-w-5xl mb-10">
+              Realize o seu{" "}
+              <br className="hidden md:block" />
+              <em>patrimônio.</em>
+            </h2>
             <a
-              href="#"
-              className="hover:text-white transition-colors flex items-center gap-2"
+              href="tel:+551140028922"
+              className="inline-flex items-center gap-4 border border-white/30 text-white text-[10px] uppercase tracking-[0.2em] font-semibold px-8 py-4 hover:bg-white hover:text-zinc-950 transition-all duration-300"
             >
-              <InstagramIcon size={18} /> Instagram
+              Falar com um Especialista
+              <ArrowRight size={14} />
             </a>
-            <a href="#" className="hover:text-white transition-colors">
-              Política de Privacidade
-            </a>
+          </div>
+        </div>
+
+        {/* Barra de credenciais */}
+        <div className="relative z-10 border-t border-white/10">
+          <div className="px-6 md:px-12 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Identidade */}
+            <div>
+              <div className="font-serif text-xl text-white mb-3">HORIZONTE.</div>
+              <p className="text-xs text-zinc-500 leading-relaxed max-w-[220px]">
+                Arquitetura contemporânea e sofisticação atemporal.
+                Presença em SP, MG e SC.
+              </p>
+            </div>
+
+            {/* Certificações */}
+            <div>
+              <div className="text-[9px] font-mono uppercase tracking-[0.25em] text-zinc-600 mb-4">
+                Certificações &amp; Registro
+              </div>
+              <div className="flex flex-wrap gap-2 mb-4">
+                <span className="border border-zinc-700 text-zinc-400 text-[9px] font-mono uppercase tracking-wider px-3 py-1.5">
+                  PBQP-H Nível A
+                </span>
+                <span className="border border-zinc-700 text-zinc-400 text-[9px] font-mono uppercase tracking-wider px-3 py-1.5">
+                  ISO 9001:2015
+                </span>
+                <span className="border border-zinc-700 text-zinc-400 text-[9px] font-mono uppercase tracking-wider px-3 py-1.5">
+                  ISO 14001
+                </span>
+              </div>
+              <p className="text-[11px] text-zinc-500">
+                CRECI-SP J-12.847 &nbsp;|&nbsp; CRECI-MG J-9.203
+              </p>
+            </div>
+
+            {/* Escritório */}
+            <div>
+              <div className="text-[9px] font-mono uppercase tracking-[0.25em] text-zinc-600 mb-4">
+                Escritório Central
+              </div>
+              <address className="text-[11px] text-zinc-400 leading-relaxed not-italic">
+                Av. Brigadeiro Faria Lima, 3.477 — 14º andar<br />
+                Itaim Bibi, São Paulo — SP, 04538-133<br />
+                <a
+                  href="tel:+551140028922"
+                  className="hover:text-white transition-colors mt-1 inline-block"
+                >
+                  (11) 4002-8922
+                </a>
+              </address>
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="px-6 md:px-12 py-5 flex flex-col md:flex-row justify-between items-center text-xs text-zinc-600 border-t border-white/[0.05]">
+            <p>© 2026 Construtora Horizonte. Todos os direitos reservados.</p>
+            <div className="flex items-center gap-6 mt-3 md:mt-0">
+              <a
+                href="#"
+                className="hover:text-zinc-300 transition-colors flex items-center gap-2"
+              >
+                <InstagramIcon size={16} /> Instagram
+              </a>
+              <a href="#" className="hover:text-zinc-300 transition-colors">
+                Política de Privacidade
+              </a>
+              <a href="#" className="hover:text-zinc-300 transition-colors">
+                Termos de Uso
+              </a>
+            </div>
           </div>
         </div>
       </footer>
@@ -1093,6 +1285,27 @@ export default function App() {
           />
         </div>
       )}
+
+      {/* ── WhatsApp FAB — canal direto, sempre visível ── */}
+      <a
+        id="whatsapp-fab"
+        href="https://wa.me/5511940028922?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20empreendimentos%20da%20Construtora%20Horizonte."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="whatsapp-fab"
+        title="Conversar pelo WhatsApp"
+        aria-label="Abrir conversa no WhatsApp"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="24"
+          height="24"
+        >
+          <path fillRule="evenodd" clipRule="evenodd" d="M20.463 3.488C18.217 1.24 15.231 0 12.05 0 5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.304-1.654a11.881 11.881 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.479-8.413zm-8.413 18.297a9.862 9.862 0 0 1-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.889 9.884zm5.43-7.403c-.298-.149-1.758-.867-2.03-.967-.272-.099-.47-.148-.669.15-.198.296-.767.966-.94 1.164-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.15-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+        </svg>
+      </a>
     </div>
   );
 }
