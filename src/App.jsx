@@ -36,6 +36,7 @@ const globalStyles = `
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    scroll-behavior: smooth;
   }
   
   .font-serif {
@@ -682,16 +683,16 @@ export default function App() {
               HORIZONTE.
             </div>
             <div className="hidden md:flex items-center gap-10 text-sm font-medium text-zinc-400">
-              <a href="#" className="hover:text-white transition-colors">
+              <a href="#lancamentos" className="hover:text-white transition-colors">
                 Empreendimentos
               </a>
               <a href="#" className="hover:text-white transition-colors">
                 Sobre Nós
               </a>
-              <a href="#" className="hover:text-white transition-colors">
+              <a href="#detalhes" className="hover:text-white transition-colors">
                 Sustentabilidade
               </a>
-              <a href="#" className="hover:text-white transition-colors">
+              <a href="#contato" className="hover:text-white transition-colors">
                 Contato
               </a>
             </div>
@@ -753,6 +754,7 @@ export default function App() {
 
         {/* ══ Lançamentos Exclusivos — Horizontal Pin Slider ══ */}
         <section
+          id="lancamentos"
           ref={horizSlider2Ref}
           data-section="1"
           className="relative bg-[#111111] overflow-hidden"
@@ -881,7 +883,7 @@ export default function App() {
           </div>
         </section>
 
-        <section data-section="3" className="py-24 md:py-32 bg-[#111111] relative z-10 overflow-hidden">
+        <section id="detalhes" data-section="3" className="py-24 md:py-32 bg-[#111111] relative z-10 overflow-hidden">
           <div className="container mx-auto px-6">
             <div className="mb-16 gsap-fade-up">
               <h2 className="font-serif text-4xl md:text-5xl mb-4 text-white">
@@ -1074,7 +1076,7 @@ export default function App() {
           </div>
         </section>
 
-        <section data-section="5" className="py-24 md:py-32 px-6 bg-[#111111] relative z-10">
+        <section id="contato" data-section="5" className="py-24 md:py-32 px-6 bg-[#111111] relative z-10">
           <div className="container mx-auto max-w-4xl">
             <div className="text-center mb-16 gsap-fade-up">
               <span className="uppercase tracking-[0.2em] text-xs font-semibold text-[#84907a] mb-4 block">
