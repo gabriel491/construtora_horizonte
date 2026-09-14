@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef } from "react";
+import { Routes, Route, Link } from "react-router-dom";
 import { ArrowRight, X, Menu, MapPin } from "lucide-react";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ProjectsProvider } from "./contexts/ProjectsContext";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import ProjectsShowcasePage from "./pages/ProjectsShowcasePage";
+import ProjectDetailPage from "./pages/ProjectDetailPage";
 
 const InstagramIcon = ({ size = 24 }) => (
   <svg
@@ -405,7 +412,7 @@ const empreendimentos = [
   },
 ];
 
-export default function App() {
+function HomePage() {
   const [gsapLoaded, setGsapLoaded] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [lightboxImg, setLightboxImg] = useState(null);
@@ -645,7 +652,7 @@ export default function App() {
       ref={containerRef}
       className="relative bg-[#111111] w-full min-h-screen"
     >
-      <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
+
 
       {/* ══ Sidebar Global de Seções (fixo, fora do main-wrapper) ══ */}
       <div className="fixed right-5 md:right-8 top-1/2 -translate-y-1/2 z-[60] hidden md:flex flex-col items-center gap-5 pointer-events-none">
@@ -686,9 +693,9 @@ export default function App() {
               <a href="#lancamentos" className="hover:text-white transition-colors">
                 Empreendimentos
               </a>
-              <a href="#" className="hover:text-white transition-colors">
-                Sobre Nós
-              </a>
+              <Link to="/projetos" className="hover:text-white transition-colors" style={{ textDecoration: 'none' }}>
+                Nossos Projetos
+              </Link>
               <a href="#detalhes" className="hover:text-white transition-colors">
                 Sustentabilidade
               </a>
@@ -1309,5 +1316,22 @@ export default function App() {
         </svg>
       </a>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <ProjectsProvider>
+        <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/projetos" element={<ProjectsShowcasePage />} />
+          <Route path="/projetos/:id" element={<ProjectDetailPage />} />
+          <Route path="/admin" element={<AdminLoginPage />} />
+          <Route path="/admin/cadastro" element={<AdminDashboardPage />} />
+        </Routes>
+      </ProjectsProvider>
+    </AuthProvider>
   );
 }
